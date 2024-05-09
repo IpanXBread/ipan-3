@@ -1,0 +1,103 @@
+<!-- <div *ngFor="let info of infos">
+    <p>{{ info.yearsAired }}</p>
+</div> -->
+
+<!-- <div *ngFor="let character of characters">
+  <p>{{ character.homePlanet }}</p>
+</div> -->
+
+<!-- <div *ngFor="let cast of casts">
+    <p>{{ cast.born }}</p>
+</div> -->
+
+<div class="container2" style="min-height: 100vh;">
+  <!-------------- Middle Container -------------->
+  <div class="middle-container">
+    <!-- Middle - Top -->
+    <div class="padder box" style="padding: 10px 20px 10px 20px">
+      <h3>Employees</h3>
+      <input type="text" #searchInput placeholder="Search name" (input)="onSearchInputChange(searchInput.value)">
+      <!-- <button (click)="updateFilteredCharacters()">Filter Output</button> -->
+      <button *ngIf="isFilterApplied" (click)="resetFilters()">Reset Filters</button>
+      <div class="container2">
+        <select id="speciesFilter" (change)="onSpeciesFilterChange($event)">
+          <option *ngFor="let species of getUniqueSpecies()" [value]="species">{{ species }}</option>
+        </select>
+        <select id="genderFilter" (change)="onGenderFilterChange($event)">
+          <option *ngFor="let gender of getUniqueGenders()" [value]="gender">{{ gender }}</option>
+        </select>
+      </div>
+    </div>
+    <!-- Middle - List -->
+    <div *ngFor="let character of filteredCharacters | slice:0:10">
+      <div class="character-list" style="padding-left: 20px;" (click)="handleClick(character)">
+        <img [src]="character.images.main" alt="Character Image" style="width: 100px;">
+        <div class="padder2">
+          <h5 style="font-family:cursive; font-weight: bold;">{{character.name.first}} {{character.name.last}}</h5>
+          <div class="box2">
+            <p style="font-family:cursive;">{{character.occupation}}</p>
+          </div>
+        </div>
+      </div>
+      <hr style="border: 1px solid rgb(190, 200, 204); margin: 20px 0;">
+    </div>
+  </div>
+
+  <!-------------- Right Container -------------->
+  <div class="right-container padder" *ngIf="pickedCharacter">
+    <!-- Right - Top -->
+    <div class="container2 verticenter" style="padding: 0px 10px 0px 50px; height:250px">
+      <img [src]="pickedCharacter.images.main" alt="pickedCharacter Image" style="width: 100px;">
+      <div>
+        <h1 style="font-family:cursive; font-weight: bold; padding: 0px 0px 50px 50px">{{pickedCharacter.name.first}}
+          {{pickedCharacter.name.last}}</h1>
+      </div>
+    </div>
+
+    <hr style="border: 1px solid rgb(190, 200, 204); margin: 20px 0;">
+
+    <!-- Right - Bottom -->
+    <div style="padding: 20px 20px 20px 20px">
+      <h3 style="font-family:cursive; font-weight: bold; ">Personal Info</h3>
+      <div class="characterssss">
+        <table class="character-info">
+          <tr>
+            <td>ID:</td>
+            <td>{{pickedCharacter.id}}</td>
+          </tr>
+          <tr>
+            <td>Age:</td>
+            <td>{{pickedCharacter.age}}</td>
+          </tr>
+          <tr>
+            <td>Gender:</td>
+            <td>{{pickedCharacter.gender}}</td>
+          </tr>
+          <tr>
+            <td>Home Planet:</td>
+            <td>{{pickedCharacter.homePlanet}}</td>
+          </tr>
+          <tr>
+            <td>Species:</td>
+            <td>{{pickedCharacter.species}}</td>
+          </tr>
+        </table>
+      </div>
+      <div class="container2" style="padding: 0px 0px 20px 0px; justify-content: space-between;">
+        <h3 style="padding-right: 20px;">Quotes</h3>
+        <button (click)="shuffleSayings()">⟳</button>
+      </div>
+      <div>
+        <table class="custom-table">
+          <ng-container *ngFor="let saying of shuffledSayings.slice(0, 3); let i = index">
+            <tr>
+              <td class="left-column">{{ i + 1 }}</td>
+              <td class="right-column">{{ saying }}</td>
+            </tr>
+          </ng-container>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>

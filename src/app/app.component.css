@@ -1,0 +1,24 @@
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    color: aliceblue;
+}
+
+.container2 {
+    display: flex;
+}
+
+.left-container {
+    flex: 2;
+    background-color: rgba(31, 129, 140, 0.152);
+    display: flex;
+    justify-content: center;
+    padding: 100px 0px 0px 0px;
+}
+
+.the-rest-container {
+    flex: 9;
+}
