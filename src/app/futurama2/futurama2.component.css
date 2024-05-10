@@ -112,3 +112,8 @@ p {
 .padder2 {
     padding: 20px;
 }
+
+.scrollable-container {
+    height: 300px; /* Or any height you prefer */
+    overflow-y: scroll;
+  }

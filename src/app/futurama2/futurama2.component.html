@@ -10,7 +10,7 @@
     <p>{{ cast.born }}</p>
 </div> -->
 
-<div class="container2" style="min-height: 100vh;">
+<div class="container2" style="min-height: 100vh;" (scroll)="onScroll($event)" class="scrollable-container">
   <!-------------- Middle Container -------------->
   <div class="middle-container">
     <!-- Middle - Top -->
@@ -29,7 +29,7 @@
       </div>
     </div>
     <!-- Middle - List -->
-    <div *ngFor="let character of filteredCharacters | slice:0:10">
+    <div *ngFor="let character of filteredCharacters | slice:0:displayLimit" >
       <div class="character-list" style="padding-left: 20px;" (click)="handleClick(character)">
         <img [src]="character.images.main" alt="Character Image" style="width: 100px;">
         <div class="padder2">
@@ -40,6 +40,10 @@
         </div>
       </div>
       <hr style="border: 1px solid rgb(190, 200, 204); margin: 20px 0;">
+    </div>
+
+    <div style="padding: 10px 10px 250px 50px" *ngIf="!scrollReachedBottom">
+      <h3 style="font-style: italic; font-family: cursive;">Loading...</h3>
     </div>
   </div>
 

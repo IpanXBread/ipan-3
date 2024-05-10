@@ -13,6 +13,9 @@ export class Futurama2Component implements OnInit {
 
   httpClient = inject(HttpClient);
 
+  private readonly scrollThreshold = 0;
+  displayLimit = 10;
+  scrollReachedBottom: boolean = false;
   isFilterApplied: boolean = false;
 
   infos: any = [];
@@ -157,6 +160,27 @@ export class Futurama2Component implements OnInit {
     }
 
     return array;
+  }
+
+  onScroll(event: any) {
+    const scrollTop = event.target.scrollTop;
+    const scrollHeight = event.target.scrollHeight;
+    const offsetHeight = event.target.offsetHeight;
+    const x = scrollHeight - scrollTop - offsetHeight;
+    const y = this.scrollThreshold;
+    // console.log("x = ", x);
+    // console.log("y = ", y);
+    if (scrollHeight - scrollTop - offsetHeight < this.scrollThreshold) {
+      this.scrollReachedBottom = true;
+      console.log("scrollReachedBottom: ", this.scrollReachedBottom);
+      console.log("Scroll reaches bottom");
+      this.loadMoreData();
+    } 
+  }
+
+  loadMoreData() {
+    console.log("Load more data");
+    this.displayLimit += 10;
   }
 
 }
