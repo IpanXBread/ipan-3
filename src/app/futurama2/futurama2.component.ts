@@ -1,6 +1,6 @@
 import { CommonModule, NgFor } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 
 @Component({
   selector: 'app-futurama2',
@@ -11,12 +11,17 @@ import { Component, OnInit, inject } from '@angular/core';
 })
 export class Futurama2Component implements OnInit {
 
+  @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('speciesFilter') speciesFilter!: ElementRef<HTMLSelectElement>;
+  @ViewChild('genderFilter') genderFilter!: ElementRef<HTMLSelectElement>;
+  
   httpClient = inject(HttpClient);
 
   private readonly scrollThreshold = 0;
   displayLimit = 10;
   scrollReachedBottom: boolean = false;
   isFilterApplied: boolean = false;
+  noDataAvailable: boolean = false;
 
   infos: any = [];
   characters: any[] = [];
@@ -85,6 +90,9 @@ export class Futurama2Component implements OnInit {
         (character.name.first.toLowerCase() + ' ' + character.name.last.toLowerCase()).includes(this.searchText.toLowerCase());
       return speciesMatch && genderMatch && nameMatch;
     });
+    this.noDataAvailable = this.filteredCharacters.length === 0;
+    console.log("filteredCharacters.length =", this.filteredCharacters.length);
+    console.log("noDataAvailable  =", this.noDataAvailable );
   }
 
   getUniqueSpecies(): string[] {
@@ -113,6 +121,8 @@ export class Futurama2Component implements OnInit {
     this.selectedSpecies = target.value;
     this.updateFilteredCharacters();
     this.isFilterApplied = true;
+    this.scrollReachedBottom = true;
+    
   }
 
   onGenderFilterChange(event: Event) {
@@ -120,12 +130,14 @@ export class Futurama2Component implements OnInit {
     this.selectedGender = target.value;
     this.updateFilteredCharacters();
     this.isFilterApplied = true;
+    this.scrollReachedBottom = true;
   }
 
   onSearchInputChange(searchText: string) {
     this.searchText = searchText;
     this.updateFilteredCharacters();
     this.isFilterApplied = true;
+    this.scrollReachedBottom = true;
   }
 
   resetFilters() {
@@ -134,6 +146,13 @@ export class Futurama2Component implements OnInit {
     this.searchText = '';
     this.updateFilteredCharacters();
     this.isFilterApplied = false;
+
+    this.searchInput.nativeElement.value = ''; 
+    this.speciesFilter.nativeElement.selectedIndex = 0; 
+    this.genderFilter.nativeElement.selectedIndex = 0;
+
+    this.scrollReachedBottom = false;
+    this.displayLimit = 10;
   }
 
   shuffleSayings() {

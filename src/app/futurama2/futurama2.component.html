@@ -13,37 +13,47 @@
 <div class="container2" style="min-height: 100vh;" (scroll)="onScroll($event)" class="scrollable-container">
   <!-------------- Middle Container -------------->
   <div class="middle-container">
-    <!-- Middle - Top -->
+
+    <!-- Middle - Top (Search) -->
     <div class="padder box" style="padding: 10px 20px 10px 20px">
       <h3>Employees</h3>
       <input type="text" #searchInput placeholder="Search name" (input)="onSearchInputChange(searchInput.value)">
       <!-- <button (click)="updateFilteredCharacters()">Filter Output</button> -->
       <button *ngIf="isFilterApplied" (click)="resetFilters()">Reset Filters</button>
       <div class="container2">
-        <select id="speciesFilter" (change)="onSpeciesFilterChange($event)">
+        <select id="speciesFilter" #speciesFilter (change)="onSpeciesFilterChange($event)">
           <option *ngFor="let species of getUniqueSpecies()" [value]="species">{{ species }}</option>
         </select>
-        <select id="genderFilter" (change)="onGenderFilterChange($event)">
+        <select id="genderFilter" #genderFilter (change)="onGenderFilterChange($event)">
           <option *ngFor="let gender of getUniqueGenders()" [value]="gender">{{ gender }}</option>
         </select>
       </div>
     </div>
-    <!-- Middle - List -->
-    <div *ngFor="let character of filteredCharacters | slice:0:displayLimit" >
-      <div class="character-list" style="padding-left: 20px;" (click)="handleClick(character)">
-        <img [src]="character.images.main" alt="Character Image" style="width: 100px;">
-        <div class="padder2">
-          <h5 style="font-family:cursive; font-weight: bold;">{{character.name.first}} {{character.name.last}}</h5>
-          <div class="box2">
-            <p style="font-family:cursive;">{{character.occupation}}</p>
-          </div>
-        </div>
+
+    <!-- Middle - Bottom (List) -->
+    <div>
+      <div *ngIf="noDataAvailable; else dataExists" style="padding:0px 0px 10px 50px; height: 100vh;">
+        <h3>No data available.</h3>
       </div>
-      <hr style="border: 1px solid rgb(190, 200, 204); margin: 20px 0;">
+      <ng-template #dataExists>
+        <div *ngFor="let character of filteredCharacters | slice:0:displayLimit">
+          <div class="character-list" style="padding-left: 20px;" (click)="handleClick(character)">
+            <img [src]="character.images.main" alt="Character Image" style="width: 100px;">
+            <div class="padder2">
+              <h5 style="font-family:cursive; font-weight: bold;">{{character.name.first}} {{character.name.last}}</h5>
+              <div class="box2">
+                <p style="font-family:cursive;">{{character.occupation}}</p>
+              </div>
+            </div>
+          </div>
+          <hr style="border: 1px solid rgb(190, 200, 204); margin: 20px 0;">
+        </div>
+      </ng-template>
     </div>
 
     <div style="padding: 10px 10px 250px 50px" *ngIf="!scrollReachedBottom">
       <h3 style="font-style: italic; font-family: cursive;">Loading...</h3>
+      <h6 style="font-style: italic; font-family: cursive;">note that it might not work if your zoom in size is below 100%</h6>
     </div>
   </div>
 

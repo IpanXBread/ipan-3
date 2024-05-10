@@ -20,6 +20,8 @@ p {
 .middle-container {
     flex: 3;
     background-color: rgba(96, 85, 8, 0.154);
+    display: flex;
+    flex-direction: column;
 }
 
 .right-container {
